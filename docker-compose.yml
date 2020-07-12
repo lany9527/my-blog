@@ -1,0 +1,35 @@
+version: "2"
+services:
+  mysql:
+    image: mysql:latest
+    container_name: ly-mysql
+    restart: always
+    volumes:
+      - "./db:/var/lib/mysql"
+      - "./conf/my.cnf:/etc/my.cnf"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+      TZ: Asia/Shanghai
+    networks:
+      - net-mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: ly-phpmyadmin
+    ports:
+      - "8089:80"
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+      PMA_HOST: ly-mysql
+      TZ: Asia/Shanghai
+    networks:
+      - net-mysql
+
+networks:
+  net-mysql:
